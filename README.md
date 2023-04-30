@@ -55,4 +55,8 @@ $$ C = m^e \space mod \space N $$
 ...where C is the encrypted message, e is the public exponent and N is the product of the prime numbers.
 
 ## 7: Decrypt message with private key
-In order to decrypt the message we can use the equation $ M = C^d \space mod \space N $ where M is the ascii value of our character we sent as a message, C is the new value our encrypted message holds, d is the private exponent and N is the product of the prime numbers.
+In order to decrypt the message we can use the equation...
+
+$$ M = C^d \space mod \space N $$
+
+...where M is the ascii value of our character we sent as a message, C is the new value our encrypted message holds, d is the private exponent and N is the product of the prime numbers.
