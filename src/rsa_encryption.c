@@ -48,7 +48,7 @@ int gcd(int num1, int num2) {
 
 int get_public_exp(int euler_totient) {
     int size;
-    int* primes = get_primes(20, &size);
+    int* primes = get_primes(euler_totient, &size);
     for (int i = size - 1; i >= 0; i--) {
         if (gcd(primes[i], euler_totient) == 1) {
             return primes[i];
@@ -58,39 +58,59 @@ int get_public_exp(int euler_totient) {
     return 0;
 }
 
-int get_private_exp(int ceiling, int public_exponent, int euler_totient) {
-    for (int num = ceiling; num > 0; num--) {
+long long int get_private_exp(long long int ceiling, long long int public_exponent, long long int euler_totient) {
+    for (long long int num = ceiling; num > 0; num--) {
         if ((public_exponent * num) % euler_totient == 1) {
             return num;
         }
     }
 }
 
-int* encrypt_msg(char* message, int* public_key) {
-    char* ptr = message;
-    int* encr_chars = calloc(strlen(message), sizeof(int));
+// calculates the result of a^b mod n without computing the intermediate result of a^b
+long long modpow(long long base, long long exponent, long long modulus) {
+    long long result = 1;
+    base = base % modulus;
+    while (exponent > 0) {
+        if (exponent % 2 == 1) {
+            result = (result * base) % modulus;
+        }
+        exponent = exponent >> 1;
+        base = (base * base) % modulus;
+    }
+    return result;
+}
 
-    int i = 0;
-    while (*ptr != '\0') {
-        int ascii_code = (int)(*ptr);
-        encr_chars[i] = (int)(fmod(pow(ascii_code, public_key[0]), public_key[1]));
-        i++;
-        ptr++;
+int* encrypt_msg(char* message, int* public_key) {
+    int msg_size = strlen(message);
+    int* encr_chars = calloc(msg_size, sizeof(int));
+    int ascii_code;
+
+    // printf("function encrypt_msg: %s\n", message);
+
+    for (int i = 0; i < msg_size; i++) {
+        ascii_code = (int)message[i];
+        encr_chars[i] = modpow(ascii_code, public_key[0], public_key[1]);
+        // printf("ascii_code: %d\tencr_char: %d\n", ascii_code, encr_chars[i]);
     }
 
     return encr_chars;
 }
 
-char* decrypt_msg(int* encrypted_message, int* private_key, int size) {
-    char* decrypted_chars = malloc(size + 1); // Allocate memory for the string
 
-    for (int i = 0; i < size; i++) {
-        int ascii_code = (int)(fmod(pow(encrypted_message[i], private_key[0]), private_key[1]));
-        char ascii_value = (char)(ascii_code);
+char* decrypt_msg(int* encrypted_message, int* private_key, int msg_size) {
+    char* decrypted_chars = malloc(msg_size + 1); // Allocate memory for the string
+
+    // printf("function decrypt_msg: private0 %d\t private1 %d\n", private_key[0], private_key[1]);
+
+    for (int i = 0; i < msg_size; i++) {
+        int ascii_code = (int)modpow(encrypted_message[i], private_key[0], private_key[1]);
+        char ascii_value = (char)ascii_code;
+        // printf("function decrypt_msg: \n\t ascii_code %d\n\t char %c\n", ascii_code, ascii_value);
+        // printf("------------------------------------------------------------------------------\n");
         decrypted_chars[i] = ascii_value;
     }
 
-    decrypted_chars[size] = '\0'; // Add null terminator at the end of the string
+    decrypted_chars[msg_size] = '\0'; // Add null terminator at the end of the string
     return decrypted_chars;
 }
 
@@ -104,18 +124,15 @@ int main() {
     int private_exp = get_private_exp(1000000, public_exp, euler_totient);
     int public_key[2] = {public_exp, num_product};
     int private_key[2] = {private_exp, num_product};
+    // printf("public0: %d\tpublic1: %d\n", public_key[0], public_key[1]);
+    // printf("private0: %d\tprivate1: %d\n", private_key[0], private_key[1]);
 
     char* message = "Hello World!";
     int* encr_msg = encrypt_msg(message, public_key);
     char* decr_msg = decrypt_msg(encr_msg, private_key, strlen(message));
-
     printf("%s", decr_msg);
 
-    for (int i = 0; i < strlen(decr_msg); i++) {
-        printf("%d\n", encr_msg[i]);
-    }
-
-    free(encr_msg); // free memory allocated by malloc/calloc
+    free(encr_msg);
     free(decr_msg);
     return 0;
 }

@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
     public_key = [public_exp, num_product]
     private_key = [private_exp, num_product]
-    print(public_key, private_key)
+    # print(public_key, private_key)
 
     encr_message = encrypt_msg(message="Hello World!", public_key=public_key)
     decr_message = decrypt_msg(encrypted_message=encr_message, private_key=private_key)

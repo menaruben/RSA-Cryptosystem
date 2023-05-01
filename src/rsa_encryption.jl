@@ -34,7 +34,8 @@ end
 function decrypt_msg(encrypted_message::Vector{Any}, private_key::Array)
     decr_chars = []
     for num in encrypted_message
-        char_ascii = Char(rem((num^private_key[1]), private_key[2]))
+        char_value = rem(num^private_key[1], private_key[2])
+        char_ascii = Char(char_value)
         append!(decr_chars, char_ascii)
     end
 
@@ -53,7 +54,7 @@ private_exp = get_private_exp(1000000, public_exp, euler_totient)
 
 public_key = [public_exp, num_product]
 private_key = [private_exp, num_product]
-println(public_key, private_key)
+# println(public_key, private_key)
 
 message = "Hello World!"
 encr_msg = encrypt_msg(message, public_key)

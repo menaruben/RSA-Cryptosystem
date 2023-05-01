@@ -1,5 +1,10 @@
 $juliaTime = Measure-Command { julia $PSScriptRoot\rsa_encryption.jl }
 $pythonTime = Measure-Command { python $PSScriptRoot\rsa_encryption.py }
+$cTime = Measure-Command { "$PSScriptRoot\a.exe" }
 
-Write-Host "Julia was $($pythonTime.TotalMilliseconds / $juliaTime.TotalMilliseconds)x faster than Python!"
-# Julia was 24.2264099245683x faster than Python!
+$results = [PSCustomObject]@{
+    Language = "Julia", "Python", "C"
+    Time_in_Seconds = $juliaTime.TotalSeconds, $pythonTime.TotalSeconds, $cTime.TotalSeconds
+}
+
+$results | Format-Table -AutoSize

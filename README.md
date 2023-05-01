@@ -7,15 +7,15 @@ We will define p and q small for our demonstration purposes:
 
 $$ p = 2, q = 7 $$
 
-## 2: calculate product (N) of p,q
+### 2: calculate product (N) of p,q
 $$ N = p \times q = 2 * 7 = 14 $$
 
-## 3: calculate euler totient of N
+### 3: calculate euler totient of N
 The euler totient is also known as $\phi(N)$:
 
 $$ \phi(N) = \phi(14) = (p-1) \times (q-1) = 1 * 6 = 6 $$
 
-## 4: calculate e (public exponent)
+### 4: calculate e (public exponent)
 Now we need to calculate the public exponent such that...
 
 $$ 1 < e < \phi(N); \space gcd(e, \phi(N)-1) = gcd(e, 5) $$
@@ -26,7 +26,7 @@ We know that our euler totient has ```gcd``` other than 1 with the numbers 2 and
 
 The public key now consists of {public exponent, N} = {5, 14}.
 
-## 5: calculate d (private exponent)
+### 5: calculate d (private exponent)
 Now we must calculate the private exponent such that...
 
 $$ (e \times d) \space mod \space \phi(N) = 1 $$
@@ -47,16 +47,26 @@ d = get_private_exp(500, 5, 6)
 ```
 Which will give us the value 497. The private key equals {497, 14}.
 
-## 6: Encrypt message with public key
+### 6: Encrypt message with public key
 Let's say you would want to send me message "B" to someone and encrypt the message. The ascii value of 'B' is 66. Now we can encrypt the message using the equation...
 
 $$ C = m^e \space mod \space N $$
 
 ...where C is the encrypted message, e is the public exponent and N is the product of the prime numbers.
 
-## 7: Decrypt message with private key
+### 7: Decrypt message with private key
 In order to decrypt the message we can use the equation...
 
 $$ M = C^d \space mod \space N $$
 
 ...where M is the ascii value of our character we sent as a message, C is the new value our encrypted message holds, d is the private exponent and N is the product of the prime numbers.
+
+## Benchmarking:
+I have written a little PowerShell script that counts the amount of time it needs to execute the code and formats the results in a list. The output should look like this:
+```
+Language           Time_in_Seconds
+--------           ---------------
+{Julia, Python, C} {0.9861561, 26.57666, 0.0027317}
+```
+
+C was blazingly fast (of course), Julia was pretty fast and Python was "surprisingly" slow!
