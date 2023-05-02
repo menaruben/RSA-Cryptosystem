@@ -59,4 +59,6 @@ private_key = [private_exp, num_product]
 message = "Hello World!"
 encr_msg = encrypt_msg(message, public_key)
 decr_msg = decrypt_msg(encr_msg, private_key)
-print(decr_msg)
+#println(encr_msg)
+println(decr_msg)
+

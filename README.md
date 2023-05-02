@@ -64,9 +64,13 @@ $$ M = C^d \space mod \space N $$
 ## Benchmarking:
 I have written a little PowerShell script that counts the amount of time it needs to execute the code and formats the results in a list. The output should look like this:
 ```
-Language           Time_in_Seconds
---------           ---------------
-{Julia, Python, C} {0.9861561, 26.57666, 0.0027317}
+Language Milliseconds
+-------- ------------
+Julia    1143.0681
+Python   25948.1201
+C        88.1477
+Go       91.9232
+Rust     68.6290
 ```
 
-C was blazingly fast (of course), Julia was pretty fast and Python was "surprisingly" slow!
+C, Rust and Go were blazingly fast (of course), Julia was pretty fast and Python was "surprisingly" slow!
