@@ -1,8 +1,8 @@
-$juliaTime = Measure-Command { julia $PSScriptRoot\Julia\rsa_encryption.jl }
-$pythonTime = Measure-Command { python $PSScriptRoot\Python\rsa_encryption.py }
 $cTime = Measure-Command { "$PSScriptRoot\C\a.exe" }
 $goTime = Measure-Command { "$PSScriptRoot\Go\rsa_encryption.exe" }
 $rustTime = Measure-Command { "$PSScriptRoot\Rust\target\release\rsa_encryption.exe" }
+$juliaTime = Measure-Command { julia $PSScriptRoot\Julia\rsa_encryption.jl }
+$pythonTime = Measure-Command { python $PSScriptRoot\Python\rsa_encryption.py }
 
 $results = @(
     [PSCustomObject]@{
