@@ -66,11 +66,11 @@ I have written a little PowerShell script that counts the amount of time it need
 ```
 Language Milliseconds
 -------- ------------
-Julia    1143.0681
-Python   25948.1201
-C        88.1477
-Go       91.9232
-Rust     68.6290
+Julia    1294.1952
+Python   26858.0528
+C        71.0539
+Go       46.4759
+Rust     38.5694
 ```
 
-C, Rust and Go were blazingly fast (of course), Julia was pretty fast and Python was "surprisingly" slow!
+C (not yet fully optimized code), Rust and Go were blazingly fast (of course), Julia was pretty fast and Python was "surprisingly" slow!
