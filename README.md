@@ -1,6 +1,9 @@
 # RSA-Cryptosystem
 RSA (Rivest–Shamir–Adleman) is a public-key cryptosystem that is widely used for secure data transmission. It is also one of the oldest. The acronym "RSA" comes from the surnames of Ron Rivest, Adi Shamir and Leonard Adleman, who publicly described the algorithm in 1977.
 
+## Annotation
+All the programs will get optimized with a better prime sieving function. Julia already uses the [sieve of eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes) but I will try to find and benchmark prime sieving functions until I find the fastest one. I will then implmenent it into every progam.
+
 ## the math behind RSA
 ### 1: define two large prime numbers for p, q
 We will define p and q small for our demonstration purposes:
