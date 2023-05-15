@@ -67,7 +67,7 @@ long long int get_private_exp(long long int ceiling, long long int public_expone
 }
 
 // calculates the result of a^b mod n without computing the intermediate result of a^b
-long long modpow(long long base, long long exponent, long long modulus) {
+unsigned int modpow(long long base, long long exponent, long long modulus) {
     long long result = 1;
     base = base % modulus;
     while (exponent > 0) {
@@ -77,7 +77,7 @@ long long modpow(long long base, long long exponent, long long modulus) {
         exponent = exponent >> 1;
         base = (base * base) % modulus;
     }
-    return result;
+    return (unsigned int)result;
 }
 
 int* encrypt_msg(char* message, int* public_key) {
@@ -103,7 +103,7 @@ char* decrypt_msg(int* encrypted_message, int* private_key, int msg_size) {
     // printf("function decrypt_msg: private0 %d\t private1 %d\n", private_key[0], private_key[1]);
 
     for (int i = 0; i < msg_size; i++) {
-        int ascii_code = (int)modpow(encrypted_message[i], private_key[0], private_key[1]);
+        int ascii_code = modpow(encrypted_message[i], private_key[0], private_key[1]);
         char ascii_value = (char)ascii_code;
         // printf("function decrypt_msg: \n\t ascii_code %d\n\t char %c\n", ascii_code, ascii_value);
         // printf("------------------------------------------------------------------------------\n");
