@@ -1,3 +1,15 @@
+defmodule Prime do
+  def is(num) when num < 2, do: false
+  def is(num) when num == 2, do: true
+  def is(num) do
+    ceiling = trunc :math.ceil :math.sqrt num
+    range = 2..ceiling
+    Enum.all?(range, fn x ->
+      rem(num, x) != 0
+    end)
+  end
+end
+
 defmodule Rsa do
   def get_euler_totient(p, q) do
     (p - 1) * (q - 1)
@@ -7,7 +19,7 @@ defmodule Rsa do
     range = 1..euler_totient
 
     possible_pub_exps =
-      Enum.filter(range, fn x -> Integer.gcd(x, euler_totient) == 1 and Prime.test(x) end)
+      Enum.filter(range, fn x -> Integer.gcd(x, euler_totient) == 1 and Prime.is(x) end)
 
     length = Enum.count(possible_pub_exps)
     pub_exp = Enum.at(possible_pub_exps, length - 1)
@@ -58,7 +70,6 @@ end
 
 defmodule Main do
   def main do
-    IO.puts("Starting RSA encryption...")
     num_p = 223
     num_q = 229
     num_product = num_p * num_q
