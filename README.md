@@ -76,4 +76,4 @@ Go       5.9045
 Rust     13.4067
 ```
 
-C, Rust and Go were blazingly fast (of course), Julia was pretty fast and Python was "surprisingly" slow!
+C, Rust and Go were blazingly fast (of course), Julia was pretty fast and Python was "surprisingly" slow! I have also written one in Elixir but I'm still figuring out how I should benchmark the elixir code in my powershell script.
