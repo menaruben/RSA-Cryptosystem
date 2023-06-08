@@ -65,7 +65,6 @@ $$ M = C^d \space mod \space N $$
 ...where M is the ascii value of our character we sent as a message, C is the new value our encrypted message holds, d is the private exponent and N is the product of the prime numbers.
 
 ## Benchmarking:
-I have written a little PowerShell script that counts the amount of time it needs to execute the code and formats the results in a list. The output should look like this:
 ```
 Language Milliseconds
 -------- ------------
@@ -74,6 +73,7 @@ Python   24580.1235
 C        8.9308
 Go       5.9045
 Rust     13.4067
+Elixir   897.3493
 ```
 
-C, Rust and Go were blazingly fast (of course), Julia was pretty fast and Python was "surprisingly" slow! I have also written one in Elixir but I'm still figuring out how I should benchmark the elixir code in my powershell script.
+C, Rust and Go were blazingly fast (of course), Elixir and Julia were pretty fast and Python was "surprisingly" slow!
