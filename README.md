@@ -75,6 +75,7 @@ Go       5.9045
 Rust     13.4067
 Elixir   897.3493
 Ruby     3360.0404
+Janet    217.9095
 ```
 
-C, Rust and Go were blazingly fast (of course), Elixir, Ruby and Julia were pretty fast and Python was "surprisingly" slow!
+C, Rust, Go and Janet were blazingly fast (of course), Elixir, Ruby and Julia were pretty fast and Python was "surprisingly" slow!
