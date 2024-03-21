@@ -59,7 +59,8 @@ Now we must calculate the private exponent such that...
 $$ (e \times d) \mod \phi(N) = 1 $$
 
 $$ (613d) \mod 616 = 1 $$
-It doesn't make any difference how much we multiply the public exponent with because any multiple of
+
+It doesn't make any difference how much we multiply the public exponent because any multiple of
 it produces the same outcome since the [modular multiplicative inverse](https://en.wikipedia.org/wiki/Modular_multiplicative_inverse) stays the same. Therefore we can remove d from the equation which leaves us with this: $613 \mod 616 = 1$
 
 The private key consists of {private exponent, N}. We now calculate the private exponent using the [extended euclidean algorithm](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm). In order to get the private exponent `d` we must calculate the [Bézout coefficients](https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity).
