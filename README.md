@@ -68,12 +68,18 @@ The private key consists of {private exponent, N}. We now calculate the private 
 Now don't confuse the variable `d` in the quote with our variable for the private exponent. Let's calculate the private exponent with this equation: $613 \mod 616 = 1$
 
 $$ 616 = 1 * 613 + 3 $$
+
 $$ 613 = 204 * 3 + 1 $$
+
 Now we rearrange the equations above in the following manner (basically resubstitution):
-$$ 1 = 1*613 - (204 * 3) $$
-$$ = 1*613 - (204 * (1*616 - 1*613)) $$
-$$ = 1*616 - 204*616 + 204*613 $$
-$$ = 205*613 - 203*616 $$
+
+$$ 1 = 1 * 613 - (204 * 3) $$
+
+$$ = 1 * 613 - (204 * (1 * 616 - 1 * 613)) $$
+
+$$ = 1 * 616 - 204 * 616 + 204 * 613 $$
+
+$$ = 205 * 613 - 203 * 616 $$
 
 Now we can see that the private exponent `d` equals 205.
 
