@@ -67,16 +67,6 @@
   (def private-key [private-exponent prod])
   (def encrypted-message (encrypt-msg message public-key))
   (def decrypted-message (decrypt-msg encrypted-message private-key))
-
-  (println "p: " p)
-  (println "q: " q)
-  (println "prod: " prod)
-  (println "euler-totient: " euler-totient)
-  (println "public-exponent: " public-exponent)
-  (println "private-exponent: " private-exponent)
-  (println "public-key: " public-key)
-  (println "private-key: " private-key)
-  (println "Encrypted message: " encrypted-message)
-  (println "Decrypted message: " decrypted-message))
+  (println decrypted-message))
 
 (main)
