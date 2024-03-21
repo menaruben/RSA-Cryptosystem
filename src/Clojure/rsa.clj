@@ -11,24 +11,16 @@
     (let [ceil (Math/sqrt n)]
     (prime-rec? n 3 ceil))))
 
-;; todo: optimize prime sieving!
-(defn primes-up-to [n]
-  (filter prime? (range 2 n)))
-
 (defn get-euler-totient [p q]
   (* (- p 1) (- q 1)))
 
-(defn gcd [a b]
-  (if (zero? b)
-    a
-    (recur b (mod a b))))
-
-(defn co-prime? [a b]
-  (= 1 (gcd a b)))
+(defn get-nearest-smaller-prime-of [n]
+  (if (prime? (- n 1))
+    (- n 1)
+    (get-nearest-smaller-prime-of (- n 1))))
 
 (defn get-public-exponent [euler-totient]
-  (def primes (reverse (primes-up-to euler-totient)))
-  (first (filter #(co-prime? euler-totient %) primes)))
+  (get-nearest-smaller-prime-of euler-totient))
 
 ;; quot a b == a//b <=> meaning a/b floored
 (defn divmod [a b]
@@ -47,11 +39,13 @@
   (let [[a b] (get-bezout-coefficients public-exponent euler-totient)]
     (mod a euler-totient)))
 
-;; todo: optimize modpow!
-(defn modpow [base exp modulus]
-  (if (= exp 0)
-    1
-    (mod (* base (modpow base (- exp 1) modulus)) modulus)))
+(defn modpow [base exponent modulus]
+  (if (= modulus 1)
+    0
+    (loop [result 1 e 0]
+      (if (= e exponent)
+        result
+        (recur (mod (* result base) modulus) (+ e 1))))))
 
 (defn encrypt-msg [msg public-key]
   (def ascii-chars (map int (seq msg)))
@@ -73,6 +67,15 @@
   (def private-key [private-exponent prod])
   (def encrypted-message (encrypt-msg message public-key))
   (def decrypted-message (decrypt-msg encrypted-message private-key))
+
+  (println "p: " p)
+  (println "q: " q)
+  (println "prod: " prod)
+  (println "euler-totient: " euler-totient)
+  (println "public-exponent: " public-exponent)
+  (println "private-exponent: " private-exponent)
+  (println "public-key: " public-key)
+  (println "private-key: " private-key)
   (println "Encrypted message: " encrypted-message)
   (println "Decrypted message: " decrypted-message))
 
