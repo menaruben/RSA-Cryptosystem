@@ -2,34 +2,78 @@ package main
 
 import (
 	"fmt"
-
-	p "github.com/fxtlabs/primes"
 )
 
-func get_euler_totient(p, q int64) int64 {
+func getEulerTotient(p, q int64) int64 {
 	return int64((int(p) - 1) * (int(q) - 1))
 }
 
-func get_public_exp(euler_totient int64) int64 {
-	var primes []int = p.Sieve(int(euler_totient) - 1)
-	for i := len(primes) - 1; i >= 0; i-- {
-		if p.Coprime(primes[i], int(euler_totient)) {
-			return int64(primes[i])
+func isPrime(num int64) bool {
+	if num < 2 {
+		return false
+	}
+	for i := int64(2); i*i <= num; i++ {
+		if num%i == 0 {
+			return false
 		}
 	}
-	return 1
+	return true
 }
 
-func get_private_exp(ceiling int64, public_exp int64, euler_totient int64) int64 {
-	for num := ceiling; num > 0; num-- {
-		if (public_exp*num)%euler_totient == 1 {
-			return num
+func getNearestSmallerPrime(num int64) int64 {
+	if isPrime(num) {
+		return num
+	}
+	for i := num - 1; i > 1; i-- {
+		if isPrime(i) {
+			return i
 		}
 	}
-	return 1
+	return 2
 }
 
-// Modular Exponentiation algorithm
+func getPublicExp(eulerTotient int64) int64 {
+	return getNearestSmallerPrime(eulerTotient)
+}
+
+func getBezoutCoefficients(a, b int64) (int64, int64) {
+	var x, y int64
+	var x1, x2, y1, y2 int64
+	var q, r int64
+	var tempA, tempB int64
+
+	x1, x2 = 1, 0
+	y1, y2 = 0, 1
+	tempA, tempB = a, b
+
+	for tempB != 0 {
+		q = tempA / tempB
+		r = tempA % tempB
+
+		x = x2
+		y = y2
+
+		x2 = x1 - q*x2
+		y2 = y1 - q*y2
+
+		x1 = x
+		y1 = y
+
+		tempA = tempB
+		tempB = r
+	}
+	return x1, y1
+}
+
+func getPrivateExp(publicExp int64, eulerTotient int64) int64 {
+	var x int64
+	x, _ = getBezoutCoefficients(publicExp, eulerTotient)
+	if x < 0 {
+		return eulerTotient + x
+	}
+	return x
+}
+
 func ModPow(base, exponent, modulus int64) int64 {
 	result := int64(1)
 	base = base % modulus
@@ -43,48 +87,45 @@ func ModPow(base, exponent, modulus int64) int64 {
 	return result
 }
 
-func encrypt_msg(message string, public_key []int64) []int64 {
-	var encrypted_msg []int64
-	var ascii_code int
-	var modpow_ascii int64
+func encryptMsg(message string, publicKey []int64) []int64 {
+	var encryptedMsg []int64
+	var asciiCode int
+	var modpowAscii int64
 	for _, char := range message {
-		ascii_code = int(char)
-		modpow_ascii = ModPow(int64(ascii_code), public_key[0], public_key[1])
-		encrypted_msg = append(encrypted_msg, modpow_ascii)
+		asciiCode = int(char)
+		modpowAscii = ModPow(int64(asciiCode), publicKey[0], publicKey[1])
+		encryptedMsg = append(encryptedMsg, modpowAscii)
 	}
-	return encrypted_msg
+	return encryptedMsg
 }
 
-func decrypt_msg(encrypted_msg []int64, private_key []int64) string {
-	var ascii_code int
-	var decrypted_msg string
+func decryptMsg(encryptedMsg []int64, privateKey []int64) string {
+	var asciiCode int
+	var decryptedMsg string
 
-	for _, encr_char := range encrypted_msg {
-		ascii_code = int(ModPow(int64(encr_char), int64(private_key[0]), int64(private_key[1])))
-		decr_char := rune(ascii_code)
-		decrypted_msg = decrypted_msg + string(decr_char)
+	for _, encrChar := range encryptedMsg {
+		asciiCode = int(ModPow(int64(encrChar), int64(privateKey[0]), int64(privateKey[1])))
+		decrChar := rune(asciiCode)
+		decryptedMsg = decryptedMsg + string(decrChar)
 	}
-	return decrypted_msg
+	return decryptedMsg
 }
 
 func main() {
-	var num_p int64 = 223
-	var num_q int64 = 229
-	var num_product int64 = num_p * num_q
+	var numP int64 = 223
+	var numQ int64 = 229
+	var numProduct int64 = numP * numQ
 
-	var euler_totient int64 = get_euler_totient(num_p, num_q)
-	var public_exp int64 = get_public_exp(euler_totient)
-	var private_exp int64 = get_private_exp(1_000_000, public_exp, euler_totient)
+	var eulerTotient int64 = getEulerTotient(numP, numQ)
+	var publicExp int64 = getPublicExp(eulerTotient)
+	var privateExp int64 = getPrivateExp(publicExp, eulerTotient)
 
-	public_key := []int64{public_exp, num_product}
-	private_key := []int64{private_exp, num_product}
-	// fmt.Println(public_key)
-	// fmt.Println(private_key)
+	publicKey := []int64{publicExp, numProduct}
+	privateKey := []int64{privateExp, numProduct}
 
 	var message string = "Hello World!"
-	var encr_msg []int64 = encrypt_msg(message, public_key)
-	var decr_msg string = decrypt_msg(encr_msg, private_key)
+	var encrMsg []int64 = encryptMsg(message, publicKey)
+	var decrMsg string = decryptMsg(encrMsg, privateKey)
 
-	// fmt.Println(encr_msg)
-	fmt.Println(decr_msg)
+	fmt.Println(decrMsg)
 }
