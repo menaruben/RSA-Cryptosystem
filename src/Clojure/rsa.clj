@@ -49,8 +49,7 @@
 
 (defn encrypt-msg [msg public-key]
   (def ascii-chars (map int (seq msg)))
-  (def encrypted-chars (map #(modpow % (first public-key) (last public-key)) ascii-chars))
-  encrypted-chars)
+  (map #(modpow % (first public-key) (last public-key)) ascii-chars))
 
 (defn decrypt-msg [msg private-key]
   (apply str (map #(char (modpow % (first private-key) (last private-key))) msg)))
