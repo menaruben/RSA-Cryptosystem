@@ -135,8 +135,7 @@ After implementing this method we can just use it inside our `encrypt-msg` funct
 ```clojure
 (defn encrypt-msg [msg public-key]
   (def ascii-chars (map int (seq msg)))
-  (def encrypted-chars (map #(modpow % (first public-key) (last public-key)) ascii-chars))
-  encrypted-chars)
+  (map #(modpow % (first public-key) (last public-key)) ascii-chars))
 ```
 If we entered "Hello World!" as the function we should now get `(282 427 380 380 451 565 522 451 482 380 4 527)`.
 
