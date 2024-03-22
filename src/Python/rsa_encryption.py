@@ -17,10 +17,16 @@ def get_nearest_smaller_prime(n: int):
 def get_public_exponent(euler_totient: int):
     return get_nearest_smaller_prime(euler_totient)
 
-def get_private_exponent(ceiling: int, public_exponent: int, euler_totient: int):
-    for num in range(ceiling, 0, -1):
-        if ((public_exponent * num) %euler_totient) == 1:
-            return num
+def get_bezout_coefficients(a, b):
+    if b == 0:
+        return 1, 0, a
+    x1, y1, gcd = get_bezout_coefficients(b, a % b)
+    x, y = y1, x1 - (a // b) * y1
+    return x, y, gcd
+
+def get_private_exponent(public_exponent: int, euler_totient: int):
+    x, y, gcd = get_bezout_coefficients(public_exponent, euler_totient)
+    return x % euler_totient
 
 def encrypt_msg(message: str, public_key: list):
     encrypted_message = []
@@ -54,7 +60,7 @@ if __name__ == "__main__":
 
     euler_totient = get_euler_totient(num_p, num_q)
     public_exp = get_public_exponent(euler_totient)
-    private_exp = get_private_exponent(ceiling=1_000_000, public_exponent=public_exp, euler_totient=euler_totient)
+    private_exp = get_private_exponent(public_exponent=public_exp, euler_totient=euler_totient)
 
     public_key = [public_exp, num_product]
     private_key = [private_exp, num_product]
