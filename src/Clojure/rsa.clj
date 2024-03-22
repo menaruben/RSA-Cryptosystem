@@ -55,8 +55,8 @@
   (apply str (map #(char (modpow % (first private-key) (last private-key))) msg)))
 
 (defn main []
-  (def p 23)
-  (def q 29)
+  (def p 223)
+  (def q 229)
   (def prod (* p q))
   (def euler-totient (get-euler-totient p q))
   (def public-exponent (get-public-exponent euler-totient))

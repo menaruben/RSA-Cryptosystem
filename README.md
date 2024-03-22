@@ -151,19 +151,3 @@ This uses the exact same `modpow` function mentioned previously. In order to dec
 (defn decrypt-msg [msg private-key]
   (apply str (map #(char (modpow % (first private-key) (last private-key))) msg)))
 ```
-
-## Benchmarking:
-```
-Language Milliseconds
--------- ------------
-Julia    993.9307
-Python   24580.1235
-C        8.9308
-Go       5.9045
-Rust     13.4067
-Elixir   897.3493
-Ruby     3360.0404
-Janet    217.9095
-```
-
-C, Rust, Go and Janet were blazingly fast (of course), Elixir, Ruby and Julia were pretty fast and Python was "surprisingly" slow!

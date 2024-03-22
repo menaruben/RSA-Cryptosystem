@@ -9,19 +9,13 @@ def is_prime(n):
             return False
     return True
 
-def get_primes(ceiling: int):
-    primes = []
-    for num in range(2, ceiling):
+def get_nearest_smaller_prime(n: int):
+    for num in range(n-1, 1, -1):
         if is_prime(num):
-            primes.append(num)
-
-    return primes
+            return num
 
 def get_public_exponent(euler_totient: int):
-    primes = get_primes(euler_totient)
-    for index in range(len(primes)-1, 1, -1):
-        if gcd(primes[index], euler_totient) == 1:
-            return primes[index]
+    return get_nearest_smaller_prime(euler_totient)
 
 def get_private_exponent(ceiling: int, public_exponent: int, euler_totient: int):
     for num in range(ceiling, 0, -1):
@@ -31,7 +25,7 @@ def get_private_exponent(ceiling: int, public_exponent: int, euler_totient: int)
 def encrypt_msg(message: str, public_key: list):
     encrypted_message = []
     for char in message:
-        encrypted_char = (int(ord(char))**public_key[0]) %public_key[1]
+        encrypted_char = modpow(int(ord(char)), public_key[0], public_key[1])
         encrypted_message.append(encrypted_char)
 
     return encrypted_message
@@ -39,10 +33,19 @@ def encrypt_msg(message: str, public_key: list):
 def decrypt_msg(encrypted_message: list, private_key: list):
     decrypted_chars = []
     for encrypted_char in encrypted_message:
-        char_ascii = (encrypted_char**private_key[0]) %private_key[1]
+        char_ascii = modpow(encrypted_char, private_key[0], private_key[1])
         decrypted_chars.append(chr(char_ascii))
 
     return ''.join(decrypted_chars)
+
+def modpow(base, exponent, modulus):
+    result = 1
+    while exponent > 0:
+        if exponent % 2 == 1:
+            result = (result * base) % modulus
+        exponent = exponent >> 1
+        base = (base * base) % modulus
+    return result
 
 if __name__ == "__main__":
     num_p = 223
@@ -55,7 +58,6 @@ if __name__ == "__main__":
 
     public_key = [public_exp, num_product]
     private_key = [private_exp, num_product]
-    # print(public_key, private_key)
 
     encr_message = encrypt_msg(message="Hello World!", public_key=public_key)
     decr_message = decrypt_msg(encrypted_message=encr_message, private_key=private_key)

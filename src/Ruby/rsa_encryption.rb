@@ -45,7 +45,7 @@ def encrypt_message(message, public_key)
     encr_message = []
 
     message.each_byte do |ch|
-        encr_char = ch.pow(public_key[0]) % public_key[1]
+        encr_char = modpow(ch, public_key[0], public_key[1])
         encr_message.append(encr_char)
     end
 
@@ -56,11 +56,21 @@ def decrypt_message(encr_message, private_key)
     decr_chars = []
 
     encr_message.each do |encr_ch|
-        ascii = encr_ch.pow(private_key[0]) % private_key[1]
+        ascii = modpow(encr_ch, private_key[0], private_key[1])
         decr_chars.append(ascii.chr)
     end
 
     return decr_chars.join()
+end
+
+def modpow(base, exp, mod)
+    res = 1
+
+    (1..exp).each do |i|
+        res = (res * base) % mod
+    end
+
+    return res
 end
 
 def main()

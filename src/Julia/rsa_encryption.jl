@@ -24,7 +24,7 @@ end
 function encrypt_msg(message::String, public_key::Array)
     encr_msg = []
     for char in message
-        encr_char = rem(BigInt(Int(char))^public_key[1], public_key[2])
+        encr_char = modpow(Int(char), public_key[1], public_key[2])
         append!(encr_msg, encr_char)
     end
 
@@ -34,7 +34,7 @@ end
 function decrypt_msg(encrypted_message::Vector{Any}, private_key::Array)
     decr_chars = []
     for num in encrypted_message
-        char_value = rem(num^private_key[1], private_key[2])
+        char_value = modpow(num, private_key[1], private_key[2])
         char_ascii = Char(char_value)
         append!(decr_chars, char_ascii)
     end
@@ -43,6 +43,18 @@ function decrypt_msg(encrypted_message::Vector{Any}, private_key::Array)
     return decr_message
 end
 
+function modpow(base::Integer, exp::Integer, mod::Integer)
+    result = 1
+    base = base % mod
+    while exp > 0
+        if isodd(exp)
+            result = (result * base) % mod
+        end
+        exp = exp >> 1
+        base = (base * base) % mod
+    end
+    return result
+end
 
 num_q = 223
 num_p = 229
