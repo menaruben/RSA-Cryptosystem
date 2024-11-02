@@ -26,6 +26,10 @@ public class Rsa {
     }
 
     private boolean isPrime(int n) {
+        if (n <= 1) {
+            return false;
+        }
+
         for (int i = 2; i < Math.sqrt(n); i++) {
             if (primeProduct % i == 0) {
                 return false;
@@ -43,6 +47,10 @@ public class Rsa {
         }
 
         throw new IllegalArgumentException("No prime number found");
+    }
+
+    private void calculatePublicExponent() {
+        publicExponent = getNearestSmallerPrime(eulerTotient);
     }
 
     private int[] getBezoutCoefficients(int a, int b) {
@@ -73,10 +81,6 @@ public class Rsa {
         coefficients[1] = lastY;
 
         return coefficients;
-    }
-
-    private void calculatePublicExponent() {
-        publicExponent = getNearestSmallerPrime(eulerTotient);
     }
 
     private void calculatePrivateExponent() {
@@ -114,11 +118,21 @@ public class Rsa {
         return decryptedMessage.toString();
     }
 
+    public String getPublicKey() {
+        return publicKey[0] + ", " + publicKey[1];
+    }
+
+    public String getPrivateKey() {
+        return privateKey[0] + ", " + privateKey[1];
+    }
+
     public static void main(String[] args) {
-        Rsa rsa = new Rsa(223, 229);
+        Rsa rsa = new Rsa(23, 29);
         List<BigInteger> encryptedMessage = rsa.encryptMessage("Hello, World!");
         // System.out.println(encryptedMessage);
         String decryptedMessage = rsa.decryptMessage(encryptedMessage);
         System.out.println(decryptedMessage);
+        System.out.println(rsa.getPublicKey());
+        System.out.println(rsa.getPrivateKey());
     }
 }

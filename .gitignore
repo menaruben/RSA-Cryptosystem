@@ -1,4 +1,7 @@
-src/Rust/target/*
+src/Rust/*
 src/Pascal/*
+src/Fortran/*
 src/R/*
+src/javacode/*
+src/C/*
 todo.md

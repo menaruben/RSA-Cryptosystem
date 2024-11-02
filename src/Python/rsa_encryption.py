@@ -54,8 +54,8 @@ def modpow(base, exponent, modulus):
     return result
 
 if __name__ == "__main__":
-    num_p = 223
-    num_q = 229
+    num_p = 23
+    num_q = 29
     num_product = num_p * num_q
 
     euler_totient = get_euler_totient(num_p, num_q)
@@ -65,6 +65,11 @@ if __name__ == "__main__":
     public_key = [public_exp, num_product]
     private_key = [private_exp, num_product]
 
+    get_public_exponent(616)
+
     encr_message = encrypt_msg(message="Hello World!", public_key=public_key)
     decr_message = decrypt_msg(encrypted_message=encr_message, private_key=private_key)
-    print(decr_message)
+    print(f"Public key: {public_key}")
+    print(f"Private key: {private_key}")
+    print(f"Encrypted message:  {encr_message}")
+    print(f"Decrypted message: {decr_message}")
